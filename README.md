@@ -1,2 +1,2 @@
-# API-Javascript---ESRI
+# API-Javascript-ESRI
 Samples
