@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html> 
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>Geometry Extent</title>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/3.29/esri/css/esri.css">
+    <style>
+      html, body { height: 100%; width: 100%; margin: 0; overflow: hidden; }
+      #map { height: 100%; padding: 0;}
+      
+    </style>
+
+    <script src="https://js.arcgis.com/3.29/"></script>
+    <script>
+      var map;
+      
+      require([
+        "esri/map",
+        "esri/layers/FeatureLayer",
+        "esri/geometry/Extent", "esri/SpatialReference",
+        "dojo/parser", "dojo/dom", "dojo/domReady!"
+      ], function( Map, FeatureLayer, Extent, SpatialReference, parser, dom) {
+        parser.parse();
+
+        /*
+        let initialExtent = new Extent(
+          -83.21476554746293,
+          -15.957743618445875,
+          -70.74528312559126,
+          -4.200267274345492,
+          new SpatialReference({ wkid:4326 })
+        );*/
+
+        let initialExtent = new Extent({
+          "type": "extent",
+          "xmin": -83.21476554746293,
+          "ymin": -15.957743618445875,
+          "xmax": -70.74528312559126,
+          "ymax": -4.200267274345492,
+          "spatialReference": {
+            "wkid": 4326
+          }
+        });
+        
+        map = new Map("map", { 
+          basemap: "gray",
+          extent: initialExtent,
+          zoom: 7
+        });
+
+        map.on("extent-change", function(extent) {
+          console.log(extent.target.geographicExtent);
+        });
+
+        //map.setExtent(extent);
+        
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="map"></div>
+  </body>
+</html>
