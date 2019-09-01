@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html> 
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    
+    <title>Symbols</title>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/3.29/esri/css/esri.css">
+    <style>
+      html, body { height: 100%; width: 100%; margin: 0; overflow: hidden; }
+      #map { height: 100%; padding: 0;}
+      
+    </style>
+
+    <script src="https://js.arcgis.com/3.29/"></script>
+    <script>
+      var map;
+      
+      require([
+        "esri/map",
+        "esri/geometry/Extent",
+        "esri/symbols/SimpleMarkerSymbol",
+        "esri/symbols/SimpleLineSymbol",
+        "esri/symbols/SimpleFillSymbol",
+        "esri/renderers/SimpleRenderer",
+        "esri/SpatialReference",
+        "esri/tasks/query",
+        "esri/tasks/QueryTask",
+        "esri/Color",
+        "dojo/parser",
+        "dojo/dom",
+        "dojo/domReady!"
+      ], function (
+        Map,
+        Extent,
+        SimpleMarkerSymbol,
+        SimpleLineSymbol,
+        SimpleFillSymbol,
+        SimpleRenderer,
+        SpatialReference,
+        Query,
+        QueryTask,
+        Color,
+        parser,
+        dom
+        ) {
+        parser.parse();
+
+        map = new Map("map", { 
+          basemap: "gray",
+          center:[-76.0000000,-10.0000000],
+          zoom: 7
+        });
+        /* Layer - CatastroMinero */
+        let _featureLayerCatastroMinero = new esri.layers.FeatureLayer("http://geocatmin.ingemmet.gob.pe/arcgis/rest/services/SERV_CATASTRO_MINERO_WGS84/MapServer/0",{
+          mode: esri.layers.FeatureLayer.MODE_ONDEMAND,
+          outFields: ["*"],
+          opacity: 0.5
+        });
+        /* Query - CatastroMinero */
+        let _queryCatastroMinero = new Query();
+        _queryCatastroMinero.outFields = ["OBJECTID","CODE_AAA","COD_ROMAN","NAME_AAA","AREA_KM2","RH","Pob_2007"];
+        _queryCatastroMinero.where = "1=1";
+        _queryCatastroMinero.orderByFields = ["NAME_AAA ASC"];
+        _queryCatastroMinero.returnGeometry = true;
+        
+
+        _callCatastroMinero = function (results) {
+            try {  
+                Window.itemFeaturesAAA = results.features;
+            } catch (error) {
+                console.log("Error: _callAAA " + error.message);
+            }
+        };
+
+        _lineColor = function(color) {
+            if(color == null){
+                return color;
+            }else{
+                return (color = new Color(color));
+            }
+        };
+
+        _simpleRenderer = function(fill1, line1, line2, line3, color) {
+            return (
+                new SimpleRenderer(
+                new SimpleFillSymbol(
+                    fill1, 
+                    new SimpleLineSymbol(
+                    line1,this._lineColor(line2), line3
+                    ), 
+                    this._lineColor(color)
+                )
+                )
+            );
+        };
+        /* Query Task - CatastroMinero */
+        let _queryTaskCatastroMinero = new QueryTask ("http://geocatmin.ingemmet.gob.pe/arcgis/rest/services/SERV_CATASTRO_MINERO_WGS84/MapServer/0");
+        _queryTaskCatastroMinero.execute(_queryCatastroMinero,_callCatastroMinero);
+        _featureLayerCatastroMinero.setDefinitionExpression("1=1");
+        /*Renderizacion de colores*/
+        let colorCatastroMinero = _simpleRenderer("solid","solid","#FF0202",0.8,[255,2,2,0]);
+        _featureLayerCatastroMinero.setRenderer(colorCatastroMinero);
+        /*Se agrega al mapa*/
+        map.addLayer(_featureLayerCatastroMinero);
+        //map.setExtent(initialExtent);        
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="map"></div>
+  </body>
+</html>
