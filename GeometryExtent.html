@@ -18,10 +18,12 @@
       
       require([
         "esri/map",
-        "esri/layers/FeatureLayer",
-        "esri/geometry/Extent", "esri/SpatialReference",
-        "dojo/parser", "dojo/dom", "dojo/domReady!"
-      ], function( Map, FeatureLayer, Extent, SpatialReference, parser, dom) {
+        "esri/geometry/Extent",
+        "esri/SpatialReference",
+        "dojo/parser",
+        "dojo/dom",
+        "dojo/domReady!"
+      ], function( Map, Extent, SpatialReference, parser, dom) {
         parser.parse();
         /*let initialExtent = new Extent( -83.21476554746293, -15.957743618445875, -70.74528312559126, -4.200267274345492, new SpatialReference({ wkid:4326 }));*/
         /*Para inicializar una extension del mapa*/
