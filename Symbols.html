@@ -104,7 +104,36 @@
         _featureLayerCatastroMinero.setRenderer(colorCatastroMinero);
         /*Se agrega al mapa*/
         map.addLayer(_featureLayerCatastroMinero);
-        //map.setExtent(initialExtent);        
+        /*
+        _queryTaskCatastroMinero.execute(_queryCatastroMinero,showResults);
+
+        let queryResults;
+
+        function showResults(results) {
+            queryResults = results;
+            let resultHtml = "";
+            let resultCount = results.features.length;
+            
+            for (let i=0; i<resultCount ;i++) {
+                feature = results.features[i];
+                resultHtml = resultHtml + "<b>Name: </b> <a href='#' onclick='showRestaurant(" + i + ")'>" +
+                feature.attribute["Name"] + "</a><br>";
+                resultHtml = resultHtml + "<b>Rating</b>" + feature.attributes["RATING"];
+                resultHtml = resultHtml + "<br><br>";
+            }
+        }
+
+        function showRestaurant(i) {
+            let feature = queryResults.features[i];
+            let symbol = new esri.symbol.SimpleMarkerSymbol();
+            symbol.setSize(50);
+            symbol.setColor(new dojo.Color([255,255,0,0.5]));
+            feature.setSymbol(symbol);
+
+            map.graphics.clear();
+            map.graphics.add(feature);
+        }        
+        */
       });
     </script>
   </head>
